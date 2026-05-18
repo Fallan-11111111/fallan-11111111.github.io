@@ -1,0 +1,144 @@
+:root {
+    --bg-dark: #0a0e17;
+    --panel-bg: rgba(20, 30, 48, 0.85);
+    --gold: #d4af37;
+    --text-light: #e0e6ed;
+    --cyan: #00f2ff;
+    --wrong: #ff4b2b;
+    --correct: #00ff88;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: radial-gradient(circle at center, #1b2735 0%, #090a0f 100%);
+    color: var(--text-light);
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* UI Paneler */
+.screen { min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
+.hidden { display: none !important; }
+
+.glass-panel, .formCard, .playCard {
+    background: var(--panel-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 40px;
+    width: 100%;
+    max-width: 650px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+}
+
+.centered { text-align: center; }
+
+/* Typografi */
+.title { font-size: 60px; margin: 0; background: linear-gradient(135deg, #fff, var(--cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.subtitle { font-size: 20px; display: block; color: var(--gold); -webkit-text-fill-color: var(--gold); letter-spacing: 5px; }
+.cardTitle { margin-top: 0; color: var(--cyan); border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
+.final-score { font-size: 72px; font-weight: bold; color: var(--gold); margin: 20px 0; }
+
+/* Knappar & Input */
+.mainBtn {
+    background: rgba(255,255,255,0.05); color: white; border: 1px solid var(--cyan);
+    padding: 15px; border-radius: 12px; cursor: pointer; font-weight: bold;
+    transition: 0.3s; width: 100%; font-size: 16px;
+}
+.mainBtn.gold { background: var(--gold); border: none; color: #000; }
+.mainBtn.outline { background: transparent; }
+.mainBtn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,242,255,0.3); }
+.mainBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.backBtn { background: transparent; border: none; color: #aaa; cursor: pointer; padding: 10px; margin-top: 10px; width: 100%; transition: 0.2s;}
+.backBtn:hover { color: white; }
+
+.fab {
+    position: fixed; bottom: 40px; right: 40px; width: 60px; height: 60px;
+    border-radius: 50%; background: var(--cyan); color: #000; border: none;
+    font-size: 30px; cursor: pointer; box-shadow: 0 0 20px rgba(0,242,255,0.4);
+    transition: 0.3s; z-index: 50;
+}
+.fab:hover { transform: scale(1.1); }
+
+.techInput {
+    background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.2);
+    padding: 15px; border-radius: 10px; color: white; width: 100%; box-sizing: border-box;
+}
+
+/* Dynamiska svarsrader */
+.answer-row { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; }
+.answer-row input[type="radio"] { accent-color: var(--cyan); transform: scale(1.6); cursor: pointer; margin-left: 5px; }
+.answer-row .techInput { margin-bottom: 0; }
+
+/* Biblioteks-kort & Knappar (Exportera/Radera) */
+.projectCard {
+    background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-bottom: 15px;
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid rgba(0,242,255,0.1); cursor: pointer; transition: 0.3s;
+}
+.projectCard:hover { background: rgba(255,255,255,0.1); border-color: var(--cyan); transform: translateX(5px); }
+.card-actions { display: flex; gap: 10px; }
+.deleteBtn, .exportBtn {
+    border-radius: 8px; padding: 8px 15px; cursor: pointer; transition: 0.2s; font-weight: bold;
+}
+.deleteBtn { background: rgba(255, 75, 43, 0.1); color: var(--wrong); border: 1px solid var(--wrong); }
+.deleteBtn:hover { background: var(--wrong); color: white; }
+.exportBtn { background: rgba(0, 242, 255, 0.1); color: var(--cyan); border: 1px solid var(--cyan); }
+.exportBtn:hover { background: var(--cyan); color: black; }
+
+/* Spelplan, Timer & Bild */
+.playHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+#playTitle { margin: 0; color: #aaa; font-weight: normal; }
+#scoreDisplay { font-weight: bold; color: var(--gold); font-size: 1.2em; }
+
+.timer-container { width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; margin-bottom: 10px; overflow: hidden; }
+#timerFill { height: 100%; width: 100%; background: var(--correct); transition: width 0.1s linear, background-color 0.3s; }
+
+.progress-bar { width: 100%; height: 2px; background: rgba(255,255,255,0.1); margin-bottom: 30px; }
+#progressFill { height: 100%; width: 0%; background: var(--cyan); transition: 0.3s; }
+
+/* NYTT: Styling för bilden inne i spelet */
+.play-image { width: 100%; max-height: 250px; object-fit: cover; border-radius: 10px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+
+.answersPlay { display: grid; gap: 12px; margin: 30px 0; }
+.answersPlay button.correct { background: var(--correct) !important; color: black; border-color: var(--correct); }
+.answersPlay button.wrong { background: var(--wrong) !important; color: white; border-color: var(--wrong); }
+
+/* ==== ROBOT & EFFEKTER ==== */
+.robot { position: fixed; bottom: 30px; left: 30px; z-index: 100; transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+.robot img { width: 400px; filter: drop-shadow(0 0 10px rgba(0,242,255,0.2)); cursor: pointer; }
+.speech-bubble {
+    position: absolute; top: -60px; left: 50px; background: white; color: rgb(10, 10, 10);
+    padding: 10px 15px; border-radius: 15px; font-weight: bold; font-size: 14px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-bottom-left-radius: 0; white-space: nowrap;
+}
+
+.robot.spin { animation: barrelRoll 0.8s ease-in-out; }
+.robot.happy { animation: jump 0.6s ease; }
+.robot.sad { animation: shake 0.5s ease; filter: grayscale(50%) sepia(50%) hue-rotate(-50deg) saturate(300%); }
+
+@keyframes barrelRoll { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
+@keyframes jump { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-40px) rotate(5deg); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px) rotate(-5deg); } 75% { transform: translateX(10px) rotate(5deg); } }
+
+/* Mus-stjärnor & Robot Effekter */
+.mouse-star { position: fixed; background: white; border-radius: 50%; pointer-events: none; z-index: 9999; animation: starFade 0.8s forwards; box-shadow: 0 0 8px var(--cyan); }
+@keyframes starFade { 0% { transform: scale(1) translateY(0); opacity: 1; } 100% { transform: scale(0) translateY(30px); opacity: 0; } }
+
+.effect-container { position: absolute; top: -40px; left: 50%; transform: translateX(-50%); width: 100px; height: 100px; pointer-events: none; z-index: 101; }
+.burst-star { position: absolute; background: var(--gold); width: 10px; height: 10px; clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%); animation: popOut 0.8s ease-out forwards; }
+.lightning { position: absolute; font-size: 50px; top: -20px; left: 25px; animation: flashZap 0.5s infinite; filter: drop-shadow(0 0 15px yellow); }
+
+@keyframes popOut { 0% { transform: translate(0,0) scale(0) rotate(0deg); opacity: 1; } 100% { transform: translate(var(--tx), var(--ty)) scale(1.5) rotate(180deg); opacity: 0; } }
+@keyframes flashZap { 0%, 100% { opacity: 1; transform: scale(1) rotate(-10deg); } 50% { opacity: 0; transform: scale(1.3) rotate(10deg); } }
+
+/* ==== STARTSKÄRM & NAVIGATION ==== */
+.hero-section { text-align: center; width: 100%; }
+.hero-title { font-size: 110px; margin-bottom: 0; text-shadow: 0 0 40px rgba(0, 242, 255, 0.5); letter-spacing: 8px; }
+.hero-subtitle { font-size: 28px; letter-spacing: 15px; margin-bottom: 60px; display: block; }
+.hero-buttons { display: flex; flex-direction: column; gap: 25px; width: 100%; max-width: 450px; margin: 0 auto; }
+.largeBtn { font-size: 24px; padding: 22px 40px; border-radius: 16px; letter-spacing: 2px; text-transform: uppercase; }
+
+.navBtn { background: rgba(255, 255, 255, 0.05); color: var(--cyan); border: 1px solid rgba(0, 242, 255, 0.3); padding: 12px 20px; border-radius: 10px; cursor: pointer; font-weight: bold; font-size: 16px; transition: 0.3s; display: flex; align-items: center; gap: 8px; }
+.navBtn:hover { background: var(--cyan); color: black; box-shadow: 0 0 20px rgba(0, 242, 255, 0.4); transform: translateY(-2px); }

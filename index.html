@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avatar Quiz - Pro Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="robotContainer" class="robot">
+    <div id="robotEffects" class="effect-container"></div>
+    <div class="speech-bubble" id="robotSpeech" style="display: none;">Välkommen!</div>
+    <img src="Project.Robot.png" alt="robot" id="robotImg" onclick="pokeRobot()">
+</div>
+
+<div id="startScreen" class="screen">
+    <div class="hero-section centered">
+        <h1 class="title hero-title">AVATAR</h1>
+        <span class="subtitle hero-subtitle">QUIZ SYSTEM</span>
+        
+        <div class="button-group hero-buttons">
+            <button class="mainBtn gold largeBtn" onclick="showScreen('projectsScreen')">Starta Spelet</button>
+            <button class="mainBtn outline largeBtn" onclick="alert('Login kommer i framtida version!')">Logga in</button>
+        </div>
+    </div>
+</div>
+
+<div id="projectsScreen" class="screen hidden">
+    <div class="glass-panel">
+        <div class="header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 class="pageTitle" style="margin: 0;">Mitt Bibliotek</h1>
+            <button class="navBtn" onclick="showScreen('startScreen')">🏠 Till Startsidan</button>
+        </div>
+        <button class="mainBtn outline" onclick="importQuiz()" style="margin-bottom: 20px; border-color: var(--correct); color: var(--correct);">📥 Importera Quiz-kod</button>
+        
+        <div class="projectList" id="projectList"></div>
+    </div>
+    <button class="fab" id="courseFab" title="Färdiga kurser" onclick="showScreen('coursesScreen')" style="bottom: 110px; background: var(--gold);">🎓</button>
+    <button class="fab" title="Skapa nytt quiz" onclick="showScreen('createQuizScreen')">+</button>
+</div>
+
+<div id="coursesScreen" class="screen hidden">
+    <div class="glass-panel">
+        <div class="header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h1 class="pageTitle" style="margin: 0;">Färdiga Kurser</h1>
+            <button class="navBtn" onclick="showScreen('projectsScreen')">🔙 Tillbaka</button>
+        </div>
+        <div class="projectList">
+            <div class="projectCard" onclick="selectCourse('webb')">
+                <div>
+                    <strong style="display:block; font-size:1.2em; color:var(--cyan)">Webbutveckling</strong>
+                    <small style="color:rgba(255,255,255,0.6)">HTML, CSS, JavaScript</small>
+                </div>
+            </div>
+            <div class="projectCard" onclick="selectCourse('matte')">
+                <div>
+                    <strong style="display:block; font-size:1.2em; color:var(--cyan)">Matematik</strong>
+                    <small style="color:rgba(255,255,255,0.6)">Logik och beräkningar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="levelScreen" class="screen hidden">
+    <div class="formCard centered">
+        <h2 class="cardTitle" id="levelTitle">Välj Svårighetsgrad</h2>
+        <div class="formButtons" style="display: flex; flex-direction: column; gap: 15px; margin-top: 30px;">
+            <button class="mainBtn" style="border-color: #00ff88; color: #00ff88;" onclick="startCourseLevel('easy')">Lätt</button>
+            <button class="mainBtn" style="border-color: var(--gold); color: var(--gold);" onclick="startCourseLevel('medium')">Mellan</button>
+            <button class="mainBtn" style="border-color: var(--wrong); color: var(--wrong);" onclick="startCourseLevel('hard')">Svår</button>
+            <button class="backBtn" onclick="showScreen('coursesScreen')">Avbryt</button>
+        </div>
+    </div>
+</div>
+
+<div id="createQuizScreen" class="screen hidden">
+    <div class="formCard">
+        <h2 class="cardTitle">Skapa Nytt Quiz</h2>
+        <input type="text" id="quizTitle" class="techInput" placeholder="Ange Quiz Titel...">
+        <div class="stats-row">
+            <span id="questionCounter">Antal frågor i detta quiz: 0</span>
+        </div>
+        <div class="formButtons">
+            <button class="mainBtn gold" onclick="showScreen('createQuestionScreen')">+ Lägg till Fråga</button>
+            <button class="mainBtn" onclick="saveQuiz()">Slutför & Spara</button>
+            <button class="backBtn" onclick="cancelQuiz()">Avbryt</button>
+        </div>
+    </div>
+</div>
+
+<div id="createQuestionScreen" class="screen hidden">
+    <div class="formCard">
+        <h2 class="cardTitle">Designa Fråga</h2>
+        <input type="text" id="questionInput" class="techInput" placeholder="Skriv din fråga här...">
+        
+        <input type="text" id="questionImage" class="techInput" placeholder="Länk till bild (Frivilligt) t.ex. https://..." style="margin-top: 10px;">
+        
+        <p style="font-size: 0.9em; color: rgba(255,255,255,0.7); margin: 15px 0 5px 0;">
+            Fyll i 2 till 4 alternativ (Fyll bara i 2 för Sant/Falskt). Markera rätt svar till vänster.
+        </p>
+
+        <div class="answersGrid" id="dynamicAnswers">
+            <div class="answer-row">
+                <input type="radio" name="correctRadio" value="0" checked title="Markera som rätt svar">
+                <input type="text" id="ans0" class="techInput answerInput" placeholder="Svarsalternativ 1 (Krävs)">
+            </div>
+            <div class="answer-row">
+                <input type="radio" name="correctRadio" value="1" title="Markera som rätt svar">
+                <input type="text" id="ans1" class="techInput answerInput" placeholder="Svarsalternativ 2 (Krävs)">
+            </div>
+            <div class="answer-row">
+                <input type="radio" name="correctRadio" value="2" title="Markera som rätt svar">
+                <input type="text" id="ans2" class="techInput answerInput" placeholder="Svarsalternativ 3 (Frivilligt)">
+            </div>
+            <div class="answer-row">
+                <input type="radio" name="correctRadio" value="3" title="Markera som rätt svar">
+                <input type="text" id="ans3" class="techInput answerInput" placeholder="Svarsalternativ 4 (Frivilligt)">
+            </div>
+        </div>
+
+        <div class="formButtons" style="margin-top: 20px;">
+            <button class="mainBtn gold" onclick="addQuestion()">Spara Fråga</button>
+            <button class="backBtn" onclick="showScreen('createQuizScreen')">Tillbaka</button>
+        </div>
+    </div>
+</div>
+
+<div id="playScreen" class="screen hidden">
+    <div class="playCard">
+        <div class="playHeader">
+            <h3 id="playTitle"></h3>
+            <div id="scoreDisplay">Poäng: 0</div>
+        </div>
+        
+        <div class="timer-container">
+            <div id="timerFill"></div>
+        </div>
+
+        <div class="progress-bar"><div id="progressFill"></div></div>
+        
+        <img id="playImage" class="play-image hidden" src="" alt="Frågebild">
+        <h2 id="playQuestion"></h2>
+        
+        <div id="playAnswers" class="answersPlay"></div>
+        <div class="playFooter">
+            <button class="mainBtn" id="nextBtn" onclick="nextQuestion()" disabled>Nästa Fråga</button>
+        </div>
+    </div>
+</div>
+
+<div id="resultScreen" class="screen hidden">
+    <div class="formCard centered">
+        <h1 class="cardTitle">Resultat!</h1>
+        <div class="final-score" id="finalScoreDisplay">0/0</div>
+        <h3 id="highscoreMessage" style="color: var(--correct); display: none;">🏆 NYTT HIGHSCORE! 🏆</h3>
+        <p id="resultMessage"></p>
+        <button class="mainBtn gold" onclick="showScreen('projectsScreen')">Tillbaka till biblioteket</button>
+    </div>
+</div>
+
+<script src="index.js"></script>
+</body>
+</html>
